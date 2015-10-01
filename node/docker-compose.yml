@@ -1,0 +1,13 @@
+node:
+  #build: node/.
+  build: node-x86/.
+  ports:
+    - "3000:3000"
+  devices:
+    - "/dev/ttyACM0:/dev/cu.usbmodem1411"
+  links:
+    - mongo
+mongo:
+  image: mongo
+  ports:
+    - "27017:27017"

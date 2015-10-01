@@ -1,0 +1,16 @@
+sia-web:
+  build: .
+  ports:
+    - "8080:8080"
+  environment:
+    - POSTGRES_USER=sia
+    - POSTGRES_PASSWORD=agricultura.1
+  links:
+    - sia-db
+sia-db:
+  image: postgres
+  ports:
+    - "5432:5432"
+  environment:
+    - POSTGRES_USER=sia
+    - POSTGRES_PASSWORD=agricultura.1
