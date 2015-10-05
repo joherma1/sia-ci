@@ -6,7 +6,7 @@ sia-web:
     - POSTGRES_USER=sia
     - POSTGRES_PASSWORD=agricultura.1
   links:
-    - sia-db
+    - sia-db:postgres
 sia-db:
   image: postgres
   ports:

@@ -1,0 +1,11 @@
+# TODO
+sia_jenkins:
+	image: jenkins
+	ports:
+	 - "8080:8080"
+	volumes_from:
+	 - jenkins_data
+ jenkins_data:
+ 	image: jenkins
+ 	volume:
+ 	 - /jenkins_config
