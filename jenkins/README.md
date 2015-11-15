@@ -55,3 +55,11 @@ docker run --rm --volumes-from jenkins_data2 -v $(pwd):/backup ubuntu tar xvf /b
 	from tar ball
 	modify Path
 ```
+
+Container
+docker create -v /var/jenkins_home --name jenkins_data joherma1/rpi-jenkins /bin/true
+
+docker run -p 8080:8080 --volumes-from jenkins_data --name jenkins.sia -d joherma1/rpi-jenkins
+
+docker build -t joherma1/rpi-jenkins .
+docker run -p 8080:8080 joherma1/rpi-jenkins
