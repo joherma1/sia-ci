@@ -1,4 +1,4 @@
-FROM hypriot/rpi-node:0.12.0
+FROM resin/raspberrypi-node
 MAINTAINER Jose Antonio Hernandez Martinez <joherma1@gmail.com>
 
 RUN mkdir -p /opt/siarest/src && \
