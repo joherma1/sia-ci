@@ -1,11 +1,14 @@
-# TODO
 sia_jenkins:
-	image: jenkins
-	ports:
-	 - "8080:8080"
-	volumes_from:
-	 - jenkins_data
- jenkins_data:
- 	image: jenkins
- 	volume:
- 	 - /jenkins_config
+  build: .
+  environment:
+    JAVA_OPTS: "-Djava.awt.headless=true"
+  ports:
+    - "50000:50000"
+    - "8080:8080"
+  volumes_from:
+    - jenkins_data
+
+jenkins_data:
+  image: resin/rpi-raspbian
+  volume:
+    - /jenkins_config
