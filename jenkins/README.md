@@ -5,11 +5,11 @@
   * Use the docker image jenkins to save space
   * Never run (/bin/true)
 
-```docker create -v /var/jenkins_home --name jenkins_data jenkins /bin/true```
+```docker create -v /var/jenkins_home --name jenkins_data resin/rpi-raspbian /bin/true```
 
 ##### 2. Run jenkins container with the volume
 
-```docker run -p 8080:8080 --volumes-from jenkins_data --name jenkins.sia -d jenkins```
+```docker run -p 8080:8080 --volumes-from jenkins_data --name jenkins_sia -d joherma1/rpi-jenkins```
 
 ###### 2a. Backup
   * Run another container an link
@@ -63,3 +63,21 @@ docker run -p 8080:8080 --volumes-from jenkins_data --name jenkins.sia -d joherm
 
 docker build -t joherma1/rpi-jenkins .
 docker run -p 8080:8080 joherma1/rpi-jenkins
+
+
+#Docker cheats
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+#Removing volumes
+docker rm -v $(docker ps -a -q)
+docker rmi -f $(docker images -q)
+
+curl $(docker-machine ip default):8080
+docker logs -f node-sia
+
+
+#DEBUG from layer with terminal
+docker run --rm -it <id_last_working_layer> bash -il
+#Run a command in a running container
+docker exec -it [container-id] bash
+
