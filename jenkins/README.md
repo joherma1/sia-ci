@@ -7,11 +7,21 @@
 
 ```docker create -v /var/jenkins_home --name jenkins_data resin/rpi-raspbian /bin/true```
 
-##### 2. Run jenkins container with the volume
+
+##### 2. Build jenkins arm version
+```` docker build -t joherma1/rpi-jenkins . ````
+  * Or pull the image if was previously uploaded
+``` docker login ```
+``` docker push joherma1/rpi-jenkins ```
+``` docker pull joherma1/rpi-jenkins ```
+
+
+##### 3. Run jenkins container with the volume
 
 ```docker run -p 8080:8080 --volumes-from jenkins_data --name jenkins_sia -d joherma1/rpi-jenkins```
 
-###### 2a. Backup
+
+###### 4a. Backup
   * Run another container an link
   * tar the folder jenkins data in pwd
 
@@ -19,7 +29,13 @@
 docker run --volumes-from jenkins_data -v $(pwd):/backup ubuntu tar cvf  /backup/backup.tar /var/jenkins_home
 ```
 
-###### 2b- Restore
+
+  * Or simply inspect the element and go to the folder
+``` docker inspect jenkins_data ```
+``` cd /var/lib/docker/volumes/446ebd09b499c236c427fc83a9a33206172f2e9b89662f35bb76296d1cbeb720/_data ```
+
+
+###### 4b- Restore
   * Another way to create the container and not run it (run without -d)
 
 ```
@@ -27,7 +43,8 @@ docker run -v /var/jenkins_home --name jenkins_data2 ubuntu /bin/bash
 docker run --rm --volumes-from jenkins_data2 -v $(pwd):/backup ubuntu tar xvf /backup/backup.tar -C /var/jenkins_home
 ```
 
-##### 3- Configure Master Slave
+
+##### 5- Configure Master Slave
   * Manage Jenkins -> Manage Nodes -> New node -> Dumb Slave
   * Create a new user with ssh login and docker
     * ``` sudo adduser jenkins ```
@@ -37,6 +54,7 @@ docker run --rm --volumes-from jenkins_data2 -v $(pwd):/backup ubuntu tar xvf /b
   * Enter the Docker host IP
     * ```17.17.42.1```
     * ``` /sbin/ip route|aw '/default/ { print $3 }' ```
+
 
 ###### Appendix
 ```
@@ -56,16 +74,7 @@ docker run --rm --volumes-from jenkins_data2 -v $(pwd):/backup ubuntu tar xvf /b
 	modify Path
 ```
 
-Container
-docker create -v /var/jenkins_home --name jenkins_data joherma1/rpi-jenkins /bin/true
-
-docker run -p 8080:8080 --volumes-from jenkins_data --name jenkins.sia -d joherma1/rpi-jenkins
-
-docker build -t joherma1/rpi-jenkins .
-docker run -p 8080:8080 joherma1/rpi-jenkins
-
-
-#Docker cheats
+###### Docker cheats
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 #Removing volumes
@@ -74,7 +83,6 @@ docker rmi -f $(docker images -q)
 
 curl $(docker-machine ip default):8080
 docker logs -f node-sia
-
 
 #DEBUG from layer with terminal
 docker run --rm -it <id_last_working_layer> bash -il
