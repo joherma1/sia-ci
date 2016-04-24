@@ -35,3 +35,21 @@ docker run -d --name redmine-postgres -e POSTGRES_PASSWORD=enimder -e POSTGRES_U
 ```
 docker run -d -p 3001:3000 --volumes-from sia-redmine-data --name sia-redmine --link redmine-postgres:postgres joherma1/rpi-redmine
 ```
+
+##### 4. Configure repository with git
+  * Log via ssh and clone the repo into the mounted contatiner
+  ```
+docker exec -it sia-redmine bash
+mkdir /usr/src/redmine/files/repos/
+chown redmine:redmine /usr/src/redmine/files/repos/
+git clone https://github.com/joherma1/siarest.git /usr/src/redmine/files/repos/siarest
+```
+  * Create a cron to fetch the repo every 5 minutes
+  ```
+sudo crontab -e -u redmine
+*/5 * * * * cd /usr/src/redmine/files/repos/siarest && git fetch --all
+```
+  * Create a repo inside the project (http://sia-sysreg.fortiddns.com:3001/projects/sia/repository) and add the git folder
+  ```
+/usr/src/redmine/files/repos/siarest/.git
+```
