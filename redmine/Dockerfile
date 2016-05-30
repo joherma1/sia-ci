@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		openssh-client \
 		subversion \
 		cron \
-		vim
+		vim \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV RAILS_ENV production
